@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branch:
+
+jobs:
+  lint_test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: automas-dev/reusable-workflows/setup_python@main
+        with:
+          python-version: "3.11"
+          poetry-version: "2.1.2"
+
+      - name: Install Dependencies
+        run: poetry install
+
+      - name: Lint
+        run: poetry run ruff check .
+
+      - name: Test
+        run: poetry run pytest tests --cov
