@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 
@@ -17,28 +17,57 @@ def client():
 def test_set_protocol(client):
     client.set_protocol(1)
 
-    client.command.assert_called_once_with("AT SP 1")
+    client.at_command.assert_called_once_with("SP1")
 
 
 def test_ignition(client):
-    client.command.return_value = "ON"
+    client.at_command.return_value = "ON"
 
     res = client.ignition()
 
     assert res == "ON"
 
-    client.command.assert_called_once_with("AT IGN", wait_ready=False)
+    client.at_command.assert_called_once_with("IGN", wait_ready=False)
 
 
 def test_scan_pid_support(client):
-    client.read_until_ready.return_value = "PID1 \rPID2\r"
+    client.obd_command.side_effect = [
+        [
+            [0x80, 0, 0, 1],
+            [0x80, 0x10, 0, 1],
+        ],
+        [
+            [0x80, 0, 0, 2],
+            [0x80, 0x10, 0, 2],
+        ],
+    ]
 
     res = client.scan_pid_support()
 
-    assert res == ["PID1", "PID2"]
+    expect = [
+        [1, 32, 33, 63],
+        [1, 12, 32, 33, 44, 63],
+    ]
 
-    client.command.assert_called_once_with(
-        "01 00", expect="SEARCHING...", wait_ready=False
+    assert res == expect
+
+    client.obd_command.assert_has_calls(
+        [
+            call(1, 0),
+            call(1, 0x20),
+        ]
     )
 
-    client.read_until_ready.assert_called_once()
+
+def test_scan_pid_support_no_ecus(client):
+    client.obd_command.side_effect = [
+        [],
+    ]
+
+    res = client.scan_pid_support()
+
+    expect = []
+
+    assert res == expect
+
+    client.obd_command.assert_called_once_with(1, 0)
