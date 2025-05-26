@@ -112,9 +112,9 @@ class ElmBaseClient:
         self.wait_until_ready()
 
         # Disable line feed, use command because echo is now disabled and expect= can work
-        self.at_command("AT L0", expect="OK")
+        self.at_command("L0", expect="OK")
 
-        self.id = self.at_command("AT I")
+        self.id = self.at_command("I")
         logger.info("Device is {}", self.id)
 
     def write(self, b: str, append_cr=True):
