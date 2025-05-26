@@ -35,6 +35,7 @@ addopts = "--cov=src"
 [tool.coverage.run]
 branch = false
 source = ["src"]
+omit = ["main.py"]
 
 [tool.coverage.paths]
 source = ["src"]
