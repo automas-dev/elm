@@ -26,3 +26,14 @@ jobs:
 
       - name: Test
         run: poetry run pytest tests --cov
+
+  increment_version:
+    name: Increment Version
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
+    if: github.ref == 'refs/heads/main'
+    secrets: inherit
+
+    needs: [lint_test]
+
+    permissions:
+      contents: write
