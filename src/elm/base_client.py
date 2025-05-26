@@ -24,7 +24,7 @@ def encode_obd(data: list[int]):
 
 def decode_obd(text: str):
     if not DATA_PATTERN_RE.fullmatch(text):
-        raise ValueError(f"Invalid format for odb response {text!r}")
+        raise ValueError(f"Invalid format for obd response {text!r}")
 
     values = text.strip().split(" ")
     data = [int(v, 16) for v in values]

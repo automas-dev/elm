@@ -367,7 +367,7 @@ def test_obd_command_write_data(mock_write, mock_read, client):
 def test_obd_command_not_enough_response(mock_write, mock_read, client):
     mock_read.return_value = ""
 
-    with pytest.raises(ElmClientError, match="Invalid format for odb response ''"):
+    with pytest.raises(ElmClientError, match="Invalid format for obd response ''"):
         client.obd_command(1, 2)
 
     mock_read.return_value = "01"
@@ -414,11 +414,11 @@ def test_decode_obd():
     assert decode_obd("01") == [1]
     assert decode_obd("01 41") == [1, 0x41]
 
-    with pytest.raises(ValueError, match="Invalid format for odb response ''"):
+    with pytest.raises(ValueError, match="Invalid format for obd response ''"):
         decode_obd("")
 
-    with pytest.raises(ValueError, match="Invalid format for odb response '100'"):
+    with pytest.raises(ValueError, match="Invalid format for obd response '100'"):
         decode_obd("100")
 
-    with pytest.raises(ValueError, match="Invalid format for odb response 'G'"):
+    with pytest.raises(ValueError, match="Invalid format for obd response 'G'"):
         decode_obd("G")
