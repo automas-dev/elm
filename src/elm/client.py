@@ -1,6 +1,7 @@
 from loguru import logger
 
 from .base_client import ElmBaseClient
+from .pid import load_pid_table
 
 
 def bitmask_to_pids(bitmask: list[int], offset: int = 0):
@@ -30,13 +31,13 @@ class ElmClient(ElmBaseClient):
         resp = self.obd_command(1, 0)
         logger.debug("Found {} ecus", len(resp))
 
-        ecu_map = list(map(bitmask_to_pids, resp))
+        ecu_list = list(map(bitmask_to_pids, resp))
 
-        if len(ecu_map) == 0:
-            return ecu_map
+        if len(ecu_list) == 0:
+            return ecu_list
 
         for extra in [0x20, 0x40, 0x60, 0x80, 0xA0, 0xC0]:
-            if extra not in ecu_map[0]:
+            if extra not in ecu_list[0]:
                 break
 
             logger.debug("Extending PID with range {:02X}", extra)
@@ -44,7 +45,16 @@ class ElmClient(ElmBaseClient):
             resp = self.obd_command(1, extra)
             ecu_extra_map = [bitmask_to_pids(data, extra) for data in resp]
 
-            for ecu, extra in zip(ecu_map, ecu_extra_map):
+            for ecu, extra in zip(ecu_list, ecu_extra_map):
                 ecu.extend(extra)
 
-        return ecu_map
+        return ecu_list
+
+
+def map_ecu_pids(ecu: list[int]):
+    pid_table = load_pid_table()
+    pid_map = pid_table.as_dict()
+
+    ecu_map = {pid: pid_map[pid] for pid in ecu}
+
+    return ecu_map

@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, call, patch
 
 import pytest
 
-from elm import ElmClient
+from elm.client import ElmClient, map_ecu_pids
 
 
 @pytest.fixture
@@ -71,3 +71,11 @@ def test_scan_pid_support_no_ecus(client):
     assert res == expect
 
     client.obd_command.assert_called_once_with(1, 0)
+
+
+def test_map_ecu_pids():
+    ecu = [1, 2]
+    ecu_map = map_ecu_pids(ecu)
+
+    assert 1 in ecu_map.keys()
+    assert 2 in ecu_map.keys()
