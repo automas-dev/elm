@@ -14,12 +14,12 @@ def bitmask_to_pids(bitmask: list[int], offset: int = 0):
 class ElmClient(ElmBaseClient):
     def set_protocol(self, protocol: int = 0):
         logger.info("Set protocol to {}", protocol)
-        self.at_command(f"AT SP {protocol}")
+        self.at_command(f"SP{protocol}")
 
     def ignition(self):
         logger.info("Check ignition status")
 
-        ign = self.at_command("AT IGN", wait_ready=False)
+        ign = self.at_command("IGN", wait_ready=False)
         logger.debug("Ignition status return {}", ign)
 
         self.wait_until_ready()
