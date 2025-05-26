@@ -161,7 +161,7 @@ class ElmBaseClient:
         logger.debug("Response to command {!r} is {!r}", cmd, resp)
 
         if resp == "?":
-            raise ElmUnknownCommand(cmd)
+            raise ElmClientError(f"Unknown command {cmd!r}")
 
         if expect is not None and resp != expect:
             raise ElmCommandError(cmd, resp, expect)

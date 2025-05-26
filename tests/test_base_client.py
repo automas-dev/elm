@@ -104,8 +104,8 @@ def test_reset(mock_write, mock_read, mock_wait, mock_at, mock_serial):
 
     mock_at.assert_has_calls(
         [
-            call("AT L0", expect="OK"),
-            call("AT I"),
+            call("L0", expect="OK"),
+            call("I"),
         ]
     )
 
@@ -293,7 +293,7 @@ def test_at_command_expect(mock_write, mock_read, mock_wait, client):
 def test_at_command_unknown_command(mock_write, mock_read, mock_wait, client):
     mock_read.return_value = "?"
 
-    with pytest.raises(ElmUnknownCommand, match="cmd"):
+    with pytest.raises(ElmClientError, match="Unknown command 'cmd'"):
         client.at_command("cmd")
 
     mock_write.assert_called_once_with("ATcmd")

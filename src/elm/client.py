@@ -1,8 +1,6 @@
-import re
-
 from loguru import logger
 
-from .base_client import CR, ElmBaseClient, ElmClientError
+from .base_client import ElmBaseClient
 
 
 def bitmask_to_pids(bitmask: list[int], offset: int = 0):
@@ -29,19 +27,13 @@ class ElmClient(ElmBaseClient):
     def scan_pid_support(self):
         logger.info("Searching for supported PID")
 
-        self.at_command("01 00", expect="SEARCHING...", wait_ready=False)
+        resp = self.obd_command(1, 0)
+        logger.debug("Found {} ecus", len(resp))
 
-        resp = self.read_until_ready().strip()
-        ecus = list(map(str.strip, resp.split("\r")))
-        logger.debug("Found {} ecus", len(ecus))
+        ecu_map = list(map(bitmask_to_pids, resp))
 
-        ecu_map = []
-        for ecu in ecus:
-            mask_ints = [int(x, 16) for x in ecu.split(" ")]
-            assert mask_ints[0] == 0x41
-            assert mask_ints[1] == 0
-            pids = bitmask_to_pids(mask_ints[2:])
-            ecu_map.append(pids)
+        if len(ecu_map) == 0:
+            return ecu_map
 
         for extra in [0x20, 0x40, 0x60, 0x80, 0xA0, 0xC0]:
             if extra not in ecu_map[0]:
@@ -49,19 +41,10 @@ class ElmClient(ElmBaseClient):
 
             logger.debug("Extending PID with range {:02X}", extra)
 
-            extra_str = hex(extra)[2:]
-            assert len(extra_str) == 2
-            self.at_command(f"01 {extra_str}", expect="SEARCHING...", wait_ready=False)
+            resp = self.obd_command(1, extra)
+            ecu_extra_map = [bitmask_to_pids(data, extra) for data in resp]
 
-            resp = self.read_until_ready().strip()
-            ecus = list(map(str.strip, resp.split("\r")))
-            logger.debug("Found {} ecus", len(ecus))
-
-            for ecu, ecu_list in zip(ecus, ecu_map):
-                mask_ints = [int(x, 16) for x in ecu.split(" ")]
-                assert mask_ints[0] == 0x41
-                assert mask_ints[1] == 0
-                pids = bitmask_to_pids(mask_ints[2:], extra)
-                ecu_list.extend(pids)
+            for ecu, extra in zip(ecu_map, ecu_extra_map):
+                ecu.extend(extra)
 
         return ecu_map
