@@ -399,6 +399,15 @@ def test_obd_command_wrong_mode_or_pid(mock_write, mock_read, client):
         client.obd_command(1, 2)
 
 
+@patch("elm.base_client.ElmBaseClient.read_until_ready")
+@patch("elm.base_client.ElmBaseClient.write")
+def test_obd_command_fail_search(mock_write, mock_read, client):
+    mock_read.return_value = "SEARCHING...\rUNABLE TO CONNECT"
+
+    with pytest.raises(ElmClientError, match="Unable to connect"):
+        client.obd_command(1, 2)
+
+
 def test_encode_obd():
     assert encode_obd([]) == ""
     assert encode_obd([1]) == "01"

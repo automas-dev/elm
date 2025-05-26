@@ -186,6 +186,12 @@ class ElmBaseClient:
         resp_str = self.read_until_ready()
         lines = resp_str.strip().split(CR)
 
+        # Handle searching message on first obd command
+        if len(lines) >= 1 and lines[0].strip() == "SEARCHING...":
+            lines = lines[1:]
+            if len(lines) < 1 or lines[0] == "UNABLE TO CONNECT":
+                raise ElmClientError("Unable to connect")
+
         try:
             resp = list(map(decode_obd, lines))
 
