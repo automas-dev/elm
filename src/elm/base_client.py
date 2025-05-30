@@ -184,7 +184,7 @@ class ElmBaseClient:
         self.write(encode_obd(cmd))
 
         resp_str = self.read_until_ready()
-        lines = resp_str.strip().split(CR)
+        lines = [line.strip() for line in resp_str.strip().split(CR)]
 
         # Handle searching message on first obd command
         if len(lines) >= 1 and lines[0].strip() == "SEARCHING...":

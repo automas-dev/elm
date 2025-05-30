@@ -344,7 +344,7 @@ def test_obd_command_no_read_data(mock_write, mock_read, client):
 @patch("elm.base_client.ElmBaseClient.read_until_ready")
 @patch("elm.base_client.ElmBaseClient.write")
 def test_obd_command_multi_response(mock_write, mock_read, client):
-    mock_read.return_value = "41 02 11\r41 02 22\r"
+    mock_read.return_value = "41 02 11 \r41 02 22\r"
     res = client.obd_command(1, 2)
 
     assert res == [[0x11], [0x22]]
