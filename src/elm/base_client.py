@@ -182,8 +182,8 @@ class ElmBaseClient:
         mode: int,
         pid: int,
         data: list[int] | None = None,
-        return_raw: bool = True,
-    ) -> str: ...
+        return_raw: bool = False,
+    ) -> list[list[int]]: ...
 
     @overload
     def obd_command(
@@ -191,8 +191,8 @@ class ElmBaseClient:
         mode: int,
         pid: int,
         data: list[int] | None = None,
-        return_raw: bool = False,
-    ) -> list[list[int]]: ...
+        return_raw: bool = True,
+    ) -> str: ...
 
     def obd_command(
         self,
