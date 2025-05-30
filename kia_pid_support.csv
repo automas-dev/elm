@@ -1,57 +1,58 @@
-ecu,PID,Data bytes,Description,Min,Max,Units,Formula,Formula_raw
-0,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-0,12,2,Engine speed,0,"16,383.75",rpm,256 A + B 4 (256A+B/4),256 A + B 4 {\displaystyle {\frac {256A+B}{4}}}
-0,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-0,33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-0,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-0,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-1,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-1,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-1,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-1,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-1,64,4,PIDs supported [$41 - $60],Bit encoded [A7..D0] == [PID $41..PID $60] See below,,,,
-2,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-2,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-2,33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-2,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-2,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-2,64,4,PIDs supported [$41 - $60],Bit encoded [A7..D0] == [PID $41..PID $60] See below,,,,
-3,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-3,3,2,Fuel system status,Bit encoded. See below,,,,
-3,4,1,Calculated engine load,0,100,%,100 255 A (100/255)A (or A 2.55 (A/2.55) ),100 255 A {\displaystyle {\tfrac {100}{255}}A} (or A 2.55 {\displaystyle {\tfrac {A}{2.55}}} )
-3,5,1,Engine coolant temperature,-40,215,°C,A − 40 (A-40),A − 40 {\displaystyle A-40}
-3,6,1,Short term fuel trim (STFT)—Bank 1,-100 (Reduce Fuel: Too Rich),99.2 (Add Fuel: Too Lean),%,100 128 A − 100 (100/128)A-100 (or A 1.28 − 100 (A/1.28)-100 ),100 128 A − 100 {\displaystyle {\frac {100}{128}}A-100} (or A 1.28 − 100 {\displaystyle {\tfrac {A}{1.28}}-100} )
-3,7,1,Long term fuel trim (LTFT)—Bank 1,,,,,
-3,11,1,Intake manifold absolute pressure,0,255,kPa,A (A),A {\displaystyle A}
-3,12,2,Engine speed,0,"16,383.75",rpm,256 A + B 4 (256A+B/4),256 A + B 4 {\displaystyle {\frac {256A+B}{4}}}
-3,13,1,Vehicle speed,0,255,km/h,A (A),A {\displaystyle A}
-3,14,1,Timing advance,-64,63.5,° before TDC,A 2 − 64 (A/2)-64,A 2 − 64 {\displaystyle {\frac {A}{2}}-64}
-3,16,2,Mass air flow sensor (MAF) air flow rate,0,655.35,g/s,256 A + B 100 (256A+B/100),256 A + B 100 {\displaystyle {\frac {256A+B}{100}}}
-3,17,1,Throttle position,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
-3,19,1,Oxygen sensors present (in 2 banks),"[A0..A3] == Bank 1, Sensors 1-4. [A4..A7] == Bank 2...",,,,
-3,21,2,Oxygen Sensor 2A: VoltageB: Short term fuel trim,,,,,
-3,28,1,OBD standards this vehicle conforms to,1,250,enumerated. See below,,
-3,31,2,Run time since engine start,0,"65,535",s,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-3,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-3,33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-3,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-3,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-4,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-4,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-4,33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-4,35,2,"Fuel Rail Gauge Pressure (diesel, or gasoline direct injection)",0,"655,350",kPa,10 ( 256 A + B ) (10(256A+B)),10 ( 256 A + B ) {\displaystyle 10(256A+B)}
-4,44,1,Commanded EGR,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
-4,45,1,EGR Error,-100,99.2,%,100 128 A − 100 (100/128)A-100,100 128 A − 100 {\displaystyle {\tfrac {100}{128}}A-100}
-4,46,1,Commanded evaporative purge,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
-4,47,1,Fuel Tank Level Input,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
-4,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-4,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-4,51,1,Absolute Barometric Pressure,0,255,kPa,A (A),A {\displaystyle A}
-4,52,4,"Oxygen Sensor 1AB: Air-Fuel Equivalence Ratio (lambda,λ)CD: Current",0-128,< 2<128,ratiomA,2 65536 ( 256 A + B ) (2/65536)(256A+B) 256 C + D 256 − 128 (256C+D/256)-128,2 65536 ( 256 A + B ) {\displaystyle {\frac {2}{65536}}(256A+B)} 256 C + D 256 − 128 {\displaystyle {\frac {256C+D}{256}}-128}
-4,60,2,"Catalyst Temperature: Bank 1, Sensor 1",-40,"6,513.5",°C,256 A + B 10 − 40 (256A+B/10)-40,256 A + B 10 − 40 {\displaystyle {\frac {256A+B}{10}}-40}
-4,64,4,PIDs supported [$41 - $60],Bit encoded [A7..D0] == [PID $41..PID $60] See below,,,,
-5,1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
-5,32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
-5,33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
-5,48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
-5,49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
+PID,Data bytes,Description,Min,Max,Units,Formula,Formula_raw
+1,4,"Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL), status and number of DTCs, components tests, DTC readiness checks)",Bit encoded. See below,,,,
+3,2,Fuel system status,Bit encoded. See below,,,,
+4,1,Calculated engine load,0,100,%,100 255 A (100/255)A (or A 2.55 (A/2.55) ),100 255 A {\displaystyle {\tfrac {100}{255}}A} (or A 2.55 {\displaystyle {\tfrac {A}{2.55}}} )
+5,1,Engine coolant temperature,-40,215,°C,A − 40 (A-40),A − 40 {\displaystyle A-40}
+6,1,Short term fuel trim (STFT)—Bank 1,-100 (Reduce Fuel: Too Rich),99.2 (Add Fuel: Too Lean),%,100 128 A − 100 (100/128)A-100 (or A 1.28 − 100 (A/1.28)-100 ),100 128 A − 100 {\displaystyle {\frac {100}{128}}A-100} (or A 1.28 − 100 {\displaystyle {\tfrac {A}{1.28}}-100} )
+7,1,Long term fuel trim (LTFT)—Bank 1,,,,,
+11,1,Intake manifold absolute pressure,0,255,kPa,A (A),A {\displaystyle A}
+12,2,Engine speed,0,"16,383.75",rpm,256 A + B 4 (256A+B/4),256 A + B 4 {\displaystyle {\frac {256A+B}{4}}}
+13,1,Vehicle speed,0,255,km/h,A (A),A {\displaystyle A}
+14,1,Timing advance,-64,63.5,° before TDC,A 2 − 64 (A/2)-64,A 2 − 64 {\displaystyle {\frac {A}{2}}-64}
+16,2,Mass air flow sensor (MAF) air flow rate,0,655.35,g/s,256 A + B 100 (256A+B/100),256 A + B 100 {\displaystyle {\frac {256A+B}{100}}}
+17,1,Throttle position,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+19,1,Oxygen sensors present (in 2 banks),"[A0..A3] == Bank 1, Sensors 1-4. [A4..A7] == Bank 2...",,,,
+21,2,Oxygen Sensor 2A: VoltageB: Short term fuel trim,,,,,
+28,1,OBD standards this vehicle conforms to,1,250,enumerated. See below,,
+31,2,Run time since engine start,0,"65,535",s,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
+32,4,PIDs supported [$21 - $40],Bit encoded [A7..D0] == [PID $21..PID $40] See below,,,,
+33,2,Distance traveled with malfunction indicator lamp (MIL) on,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
+35,2,"Fuel Rail Gauge Pressure (diesel, or gasoline direct injection)",0,"655,350",kPa,10 ( 256 A + B ) (10(256A+B)),10 ( 256 A + B ) {\displaystyle 10(256A+B)}
+44,1,Commanded EGR,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+45,1,EGR Error,-100,99.2,%,100 128 A − 100 (100/128)A-100,100 128 A − 100 {\displaystyle {\tfrac {100}{128}}A-100}
+46,1,Commanded evaporative purge,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+47,1,Fuel Tank Level Input,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+48,1,Warm-ups since codes cleared,0,255,A {\displaystyle A},,
+49,2,Distance traveled since codes cleared,0,"65,535",km,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
+51,1,Absolute Barometric Pressure,0,255,kPa,A (A),A {\displaystyle A}
+52,4,"Oxygen Sensor 1AB: Air-Fuel Equivalence Ratio (lambda,λ)CD: Current",0-128,< 2<128,ratiomA,2 65536 ( 256 A + B ) (2/65536)(256A+B) 256 C + D 256 − 128 (256C+D/256)-128,2 65536 ( 256 A + B ) {\displaystyle {\frac {2}{65536}}(256A+B)} 256 C + D 256 − 128 {\displaystyle {\frac {256C+D}{256}}-128}
+60,2,"Catalyst Temperature: Bank 1, Sensor 1",-40,"6,513.5",°C,256 A + B 10 − 40 (256A+B/10)-40,256 A + B 10 − 40 {\displaystyle {\frac {256A+B}{10}}-40}
+64,4,PIDs supported [$41 - $60],Bit encoded [A7..D0] == [PID $41..PID $60] See below,,,,
+65,4,Monitor status this drive cycle,Bit encoded. See below,,,,
+66,2,Control module voltage,0,65.535,V,256 A + B 1000 (256A+B/1000),256 A + B 1000 {\displaystyle {\frac {256A+B}{1000}}}
+67,2,Absolute load value,0,"25,700",%,100 255 ( 256 A + B ) (100/255)(256A+B),100 255 ( 256 A + B ) {\displaystyle {\tfrac {100}{255}}(256A+B)}
+68,2,"Commanded Air-Fuel Equivalence Ratio (lambda,λ)",0,< 2,ratio,2 65536 ( 256 A + B ) (2/65536)(256A+B),2 65536 ( 256 A + B ) {\displaystyle {\tfrac {2}{65536}}(256A+B)}
+69,1,Relative throttle position,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+70,1,Ambient air temperature,-40,215,°C,A − 40 (A-40),A − 40 {\displaystyle A-40}
+71,1,Absolute throttle position B,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\frac {100}{255}}A}
+73,1,Accelerator pedal position D,,,,,
+74,1,Accelerator pedal position E,,,,,
+76,1,Commanded throttle actuator,,,,,
+81,1,Fuel Type,From fuel type table see below,,,,
+83,2,Absolute Evap system Vapor Pressure,0,327.675,kPa,256 A + B 200 (256A+B/200),256 A + B 200 {\displaystyle {\frac {256A+B}{200}}}
+85,2,"Short term secondary oxygen sensor trim, A: bank 1, B: bank 3",-100,99.2,%,100 128 A − 100 (100/128)A-100 100 128 B − 100 (100/128)B-100,100 128 A − 100 {\displaystyle {\frac {100}{128}}A-100} 100 128 B − 100 {\displaystyle {\frac {100}{128}}B-100}
+86,2,"Long term secondary oxygen sensor trim, A: bank 1, B: bank 3",,,,,
+91,1,Hybrid battery pack remaining life,0,100,%,100 255 A (100/255)A,100 255 A {\displaystyle {\tfrac {100}{255}}A}
+94,2,Engine fuel rate,0,3212.75,L/h,256 A + B 20 (256A+B/20),256 A + B 20 {\displaystyle {\frac {256A+B}{20}}}
+96,4,PIDs supported [$61 - $80],Bit encoded [A7..D0] == [PID $61..PID $80] See below,,,,
+98,1,Actual engine - percent torque,-125,130,%,A − 125 (A-125),A − 125 {\displaystyle A-125}
+99,2,Engine reference torque,0,"65,535",N⋅m,256 A + B (256A+B),256 A + B {\displaystyle 256A+B}
+104,3,Intake air temperature sensor,-40,215,°C,[A0]== Sensor 1 Supported[A1]== Sensor 2 SupportedSensor 1: B − 40 (B-40) Sensor 2: C − 40 (C-40),[A0]== Sensor 1 Supported[A1]== Sensor 2 SupportedSensor 1: B − 40 {\displaystyle B-40} Sensor 2: C − 40 {\displaystyle C-40}
+107,5,Exhaust gas recirculation temperature,,,,,
+128,4,PIDs supported [$81 - $A0],Bit encoded [A7..D0] == [PID $81..PID $A0] See below,,,,
+142,1,Engine Friction - Percent Torque,-125,130,%,A − 125 (A-125),A − 125 {\displaystyle A-125}
+154,6,"Hybrid/EV Vehicle System Data, Battery, Voltage",,,,,
+157,4,Engine Fuel Rate,g/s,,,,
+158,2,Engine Exhaust Flow Rate,kg/h,,,,
+160,4,PIDs supported [$A1 - $C0],Bit encoded [A7..D0] == [PID $A1..PID $C0] See below,,,,
+166,4,Odometer [c],0,"429,496,729.5",km,A ( 2 24 ) + B ( 2 16 ) + C ( 2 8 ) + D 10 \frac A(2^24)+B(2^16)+C(2^8)+D10,A ( 2 24 ) + B ( 2 16 ) + C ( 2 8 ) + D 10 {\displaystyle {\frac {A(2^{24})+B(2^{16})+C(2^{8})+D}{10}}}

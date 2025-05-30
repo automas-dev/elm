@@ -25,30 +25,32 @@ class ElmClient(ElmBaseClient):
 
         return ign
 
-    def scan_pid_support(self):
+    def scan_pid_support(self) -> list[int]:
         logger.info("Searching for supported PID")
 
         resp = self.obd_command(1, 0)
         logger.debug("Found {} ecus", len(resp))
 
-        ecu_list = list(map(bitmask_to_pids, resp))
+        pids = set()
+        for ecu in map(bitmask_to_pids, resp):
+            pids = pids.union(set(ecu))
 
-        if len(ecu_list) == 0:
-            return ecu_list
+        if len(pids) == 0:
+            logger.warning("Could not find any supported PIDs")
+            return []
 
         for extra in [0x20, 0x40, 0x60, 0x80, 0xA0, 0xC0]:
-            if extra not in ecu_list[0]:
+            if extra not in pids:
                 break
 
             logger.debug("Extending PID with range {:02X}", extra)
 
             resp = self.obd_command(1, extra)
-            ecu_extra_map = [bitmask_to_pids(data, extra) for data in resp]
 
-            for ecu, extra in zip(ecu_list, ecu_extra_map):
-                ecu.extend(extra)
+            for ecu in map(lambda x: bitmask_to_pids(x, extra), resp):
+                pids = pids.union(set(ecu))
 
-        return ecu_list
+        return sorted(pids)
 
 
 def map_ecu_pids(ecu: list[int]):
