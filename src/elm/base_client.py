@@ -1,4 +1,5 @@
 import re
+from typing import overload
 
 import serial
 from loguru import logger
@@ -171,7 +172,31 @@ class ElmBaseClient:
 
         return resp
 
-    def obd_command(self, mode: int, pid: int, data: list[int] | None = None):
+    @overload
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = True,
+    ) -> str: ...
+
+    @overload
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = False,
+    ) -> list[list[int]]: ...
+
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = False,
+    ):
         assert 0 <= mode <= 0xFF, "Mode should be a 2 digit positive hex value"
         assert 0 <= pid <= 0xFF, "pid should be a 2 digit positive hex value"
 
@@ -184,6 +209,9 @@ class ElmBaseClient:
         self.write(encode_obd(cmd))
 
         resp_str = self.read_until_ready()
+        if return_raw:
+            return resp_str
+
         lines = [line.strip() for line in resp_str.strip().split(CR)]
 
         # Handle searching message on first obd command
