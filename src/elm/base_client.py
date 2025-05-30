@@ -51,6 +51,10 @@ class ElmTimeout(ElmClientError):
         super().__init__(f"Timeout while waiting for {expect}")
 
 
+class ElmNoData(ElmClientError):
+    pass
+
+
 class ElmBaseClient:
     def __init__(
         self, port: str | None = None, connection: serial.Serial | None = None
@@ -219,6 +223,9 @@ class ElmBaseClient:
             lines = lines[1:]
             if len(lines) < 1 or lines[0] == "UNABLE TO CONNECT":
                 raise ElmClientError("Unable to connect")
+
+        if "NO_DATA" in lines:
+            raise ElmNoData()
 
         try:
             resp = list(map(decode_obd, lines))
