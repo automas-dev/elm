@@ -44,10 +44,7 @@ def test_scan_pid_support(client):
 
     res = client.scan_pid_support()
 
-    expect = [
-        [1, 32, 33, 63],
-        [1, 12, 32, 33, 44, 63],
-    ]
+    expect = [1, 12, 32, 33, 44, 63]
 
     assert res == expect
 

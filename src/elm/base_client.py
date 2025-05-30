@@ -1,4 +1,5 @@
 import re
+from typing import overload
 
 import serial
 from loguru import logger
@@ -48,6 +49,10 @@ class ElmCommandError(ElmClientError):
 class ElmTimeout(ElmClientError):
     def __init__(self, expect: str):
         super().__init__(f"Timeout while waiting for {expect}")
+
+
+class ElmNoData(ElmClientError):
+    pass
 
 
 class ElmBaseClient:
@@ -171,7 +176,31 @@ class ElmBaseClient:
 
         return resp
 
-    def obd_command(self, mode: int, pid: int, data: list[int] | None = None):
+    @overload
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = False,
+    ) -> list[list[int]]: ...
+
+    @overload
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = True,
+    ) -> str: ...
+
+    def obd_command(
+        self,
+        mode: int,
+        pid: int,
+        data: list[int] | None = None,
+        return_raw: bool = False,
+    ):
         assert 0 <= mode <= 0xFF, "Mode should be a 2 digit positive hex value"
         assert 0 <= pid <= 0xFF, "pid should be a 2 digit positive hex value"
 
@@ -184,13 +213,19 @@ class ElmBaseClient:
         self.write(encode_obd(cmd))
 
         resp_str = self.read_until_ready()
-        lines = resp_str.strip().split(CR)
+        if return_raw:
+            return resp_str
+
+        lines = [line.strip() for line in resp_str.strip().split(CR)]
 
         # Handle searching message on first obd command
         if len(lines) >= 1 and lines[0].strip() == "SEARCHING...":
             lines = lines[1:]
             if len(lines) < 1 or lines[0] == "UNABLE TO CONNECT":
                 raise ElmClientError("Unable to connect")
+
+        if "NO DATA" in lines:
+            raise ElmNoData()
 
         try:
             resp = list(map(decode_obd, lines))
