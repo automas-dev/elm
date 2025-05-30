@@ -224,7 +224,7 @@ class ElmBaseClient:
             if len(lines) < 1 or lines[0] == "UNABLE TO CONNECT":
                 raise ElmClientError("Unable to connect")
 
-        if "NO_DATA" in lines:
+        if "NO DATA" in lines:
             raise ElmNoData()
 
         try:

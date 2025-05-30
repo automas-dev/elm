@@ -6,8 +6,8 @@ from elm.base_client import (
     ElmBaseClient,
     ElmClientError,
     ElmCommandError,
+    ElmNoData,
     ElmTimeout,
-    ElmUnknownCommand,
     decode_obd,
     encode_obd,
 )
@@ -343,11 +343,37 @@ def test_obd_command_no_read_data(mock_write, mock_read, client):
 
 @patch("elm.base_client.ElmBaseClient.read_until_ready")
 @patch("elm.base_client.ElmBaseClient.write")
+def test_obd_command_no_data(mock_write, mock_read, client):
+    mock_read.return_value = "NO DATA"
+
+    with pytest.raises(ElmNoData):
+        client.obd_command(1, 2)
+
+    mock_write.assert_called_once_with("01 02")
+
+    mock_read.assert_called_once()
+
+
+@patch("elm.base_client.ElmBaseClient.read_until_ready")
+@patch("elm.base_client.ElmBaseClient.write")
 def test_obd_command_multi_response(mock_write, mock_read, client):
     mock_read.return_value = "41 02 11 \r41 02 22\r"
     res = client.obd_command(1, 2)
 
     assert res == [[0x11], [0x22]]
+
+    mock_write.assert_called_once_with("01 02")
+
+    mock_read.assert_called_once()
+
+
+@patch("elm.base_client.ElmBaseClient.read_until_ready")
+@patch("elm.base_client.ElmBaseClient.write")
+def test_obd_command_return_raw(mock_write, mock_read, client):
+    mock_read.return_value = "41 02 11 \r41 02 22\r"
+    res = client.obd_command(1, 2, return_raw=True)
+
+    assert res == "41 02 11 \r41 02 22\r"
 
     mock_write.assert_called_once_with("01 02")
 
